@@ -37,7 +37,7 @@ pipeline {
                 aquasec/trivy image ${env.PROJECT_NAME}:${BUILD_NUMBER} '
             }
         }
-        
+
     post {
         success {
             echo "Pipeline completed successfully for ${params.ENV}"
@@ -46,4 +46,5 @@ pipeline {
             echo "Pipeline failed for ${params.ENV}"
         }
     }
+}
 }
