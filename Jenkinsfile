@@ -16,9 +16,10 @@ pipeline {
         stage('Dockerfile-lint') {
             steps {
                 echo "Running Dockerfile lint for environment: ${params.ENV}"
-                sh 'whoami'
-                sh 'id -nG'
-                sh 'docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/hadolint/hadolint < Dockerfile | tee hadolint.out'
+                bash 'docker ps'
+                bash 'whoami'
+                bash 'id -nG'
+                bash 'docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/hadolint/hadolint < Dockerfile | tee hadolint.out'
             }
         }
         stage('Build') {
