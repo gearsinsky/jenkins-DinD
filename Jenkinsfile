@@ -18,6 +18,7 @@ pipeline {
                 echo "Running Dockerfile lint for environment: ${params.ENV}"
                 sh 'docker run --rm -i \
                 ghcr.io/hadolint/hadolint < Dockerfile'
+                sh 'echo $?'
             }
         }
         stage('Build') {
