@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Dockerfile-lint') {
             steps {
-                echo "in ${env} to Dockerfile lint"
+                echo "Running Dockerfile lint for environment: ${params.ENV}"
                 sh 'docker run --rm -i \
                 ghcr.io/hadolint/hadolint < Dockerfile'
             }
@@ -37,7 +37,7 @@ pipeline {
                 aquasec/trivy image ${env.PROJECT_NAME}:${BUILD_NUMBER} '
             }
         }
-
+    }
     post {
         success {
             echo "Pipeline completed successfully for ${params.ENV}"
@@ -46,5 +46,4 @@ pipeline {
             echo "Pipeline failed for ${params.ENV}"
         }
     }
-}
 }
