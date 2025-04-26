@@ -16,6 +16,7 @@ pipeline {
         stage('Dockerfile-lint') {
             steps {
                 echo "Running Dockerfile lint for environment: ${params.ENV}"
+                sh 'whoami'
                 sh 'docker run --rm -i -u root ghcr.io/hadolint/hadolint < Dockerfile | tee hadolint.out '
             }
         }
