@@ -19,7 +19,12 @@ pipeline {
                 bash 'docker ps'
                 bash 'whoami'
                 bash 'id -nG'
-                bash 'docker run --rm -i -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/hadolint/hadolint < Dockerfile | tee hadolint.out'
+                sh '''
+                    docker run --rm -i \
+                    -v $(pwd):/workspace \
+                    ghcr.io/hadolint/hadolint \
+                    hadolint /workspace/Dockerfile | tee hadolint.out
+                '''             
             }
         }
         stage('Build') {
