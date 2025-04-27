@@ -17,7 +17,7 @@ pipeline {
             steps {
                 echo "Running Dockerfile lint for environment: ${params.ENV}"
                 sh '''
-                    chmod 755 *
+                    chmod 755 Dockerfile main.go
                     ls -la
                     whoami
                     docker info
