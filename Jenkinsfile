@@ -18,6 +18,7 @@ pipeline {
                 echo "Running Dockerfile lint for environment: ${params.ENV}"
                 sh '''
                     chmod 755 *
+                    ls -la
                     whoami
                     docker info
                     docker run --rm -i \
