@@ -22,7 +22,6 @@ pipeline {
                     docker ps
                     docker run --rm -i \
                     -v $(pwd):/workspace \
-                    -v /etc/group:/etc/group:ro \
                     ghcr.io/hadolint/hadolint \
                     hadolint /workspace/Dockerfile | tee hadolint.out
                 '''             
