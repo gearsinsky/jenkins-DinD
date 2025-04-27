@@ -22,7 +22,7 @@ pipeline {
                     docker run --rm -i \
                     -v $(pwd):/workspace \
                     ghcr.io/hadolint/hadolint \
-                    hadolint /workspace/Dockerfile | tee hadolint.out
+                    hadolint /workspace/jenkinslab02/Dockerfile | tee hadolint.out
                 '''             
             }
         }
