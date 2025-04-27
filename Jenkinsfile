@@ -16,10 +16,10 @@ pipeline {
         stage('Dockerfile-lint') {
             steps {
                 echo "Running Dockerfile lint for environment: ${params.ENV}"
-                bash 'docker ps'
-                bash 'whoami'
-                bash 'id -nG'
                 sh '''
+                    id -nG
+                    whoami
+                    docker ps
                     docker run --rm -i \
                     -v $(pwd):/workspace \
                     ghcr.io/hadolint/hadolint \
