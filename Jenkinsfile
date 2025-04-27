@@ -17,7 +17,6 @@ pipeline {
             steps {
                 echo "Running Dockerfile lint for environment: ${params.ENV}"
                 sh '''
-                    id -nG
                     whoami
                     docker ps
                     docker run --rm -i \
