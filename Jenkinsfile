@@ -17,7 +17,7 @@ pipeline {
             steps {
                 echo "Running Dockerfile lint for environment: ${params.ENV}"
                 sh '''
-                    chmod 755 Dockerfile
+                    chmod 755 *
                     whoami
                     docker info
                     docker run --rm -i \
