@@ -8,7 +8,9 @@ pipeline {
 
     // 全域環境變數
     environment {
-        PROJECT_NAME = "go-project"
+        PROJECT_NAME = "python-project"
+        DOCKER_HOST: "tcp://docker-dind-daemon:2375"
+
         // DEPLOY_DIR = "/opt/${env.ENV}/deployments"
     }
 
@@ -40,7 +42,6 @@ pipeline {
                 steps {
                     echo "Running Image lint"
                     sh """
-                        DOCKER_HOST: "tcp://docker-dind-daemon:2375"
                         docker run --rm \
                         aquasec/trivy image ${env.PROJECT_NAME}:${BUILD_NUMBER}
                     """
