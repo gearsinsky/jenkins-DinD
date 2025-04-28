@@ -43,6 +43,7 @@ pipeline {
                     echo "Running Image lint"
                     sh """
                         docker run --rm \
+                        -e DOCKER_HOST=$DOCKER_HOST \
                         aquasec/trivy image ${env.PROJECT_NAME}:${BUILD_NUMBER}
                     """
                 }
