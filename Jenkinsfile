@@ -19,7 +19,7 @@ pipeline {
                 sh '''
                     pwd
                     docker run --rm -i \
-                    -v ./Dockerfile:/workspace/Dockerfile \
+                    -v Dockerfile:/workspace/Dockerfile \
                     ghcr.io/hadolint/hadolint  \
                     hadolint /workspace/Dockerfile 
                 '''             
