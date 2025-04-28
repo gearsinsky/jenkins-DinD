@@ -25,22 +25,26 @@ pipeline {
         //         '''             
         //     }
         // }
-        stage('Build') {
-            steps {
-                echo "Building image: ${env.PROJECT_NAME}"
-                sh '''docker build --platform linux/amd64 -t ${env.PROJECT_NAME}:${BUILD_NUMBER} .'''
-                echo "image already to use"
-                sh 'docker images'
+            stage('Build') {
+                steps {
+                    echo "Building image: ${env.PROJECT_NAME}"
+                    sh """
+                        docker build --platform linux/amd64 -t ${env.PROJECT_NAME}:${BUILD_NUMBER} .
+                    """
+                    echo "image already to use"
+                    sh 'docker images'
+                }
             }
-        }
 
-        stage('image-lint') {
-            steps {
-                echo "Running Image lint"
-                sh '''docker run --rm \
-                aquasec/trivy image ${env.PROJECT_NAME}:${BUILD_NUMBER} '''
+            stage('image-lint') {
+                steps {
+                    echo "Running Image lint"
+                    sh """
+                        docker run --rm \
+                        aquasec/trivy image ${env.PROJECT_NAME}:${BUILD_NUMBER}
+                    """
+                }
             }
-        }
     }
     post {
         success {
