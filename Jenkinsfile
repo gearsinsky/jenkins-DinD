@@ -18,11 +18,10 @@ pipeline {
                 echo "Running Dockerfile lint for environment: ${params.ENV}"
                 sh '''
                     pwd
-                    ls -la /var/jenkins_home/workspace
                     docker run --rm -i \
                     -v $(pwd):/workspace \
-                    ghcr.io/hadolint/hadolint ls && pwd \
-                    // hadolint /workspace/Dockerfile 
+                    ghcr.io/hadolint/hadolint  \
+                    hadolint /workspace/Dockerfile 
                 '''             
             }
         }
