@@ -41,8 +41,8 @@ pipeline {
                     echo "Running Image lint"
                     sh """
                         docker run --rm \
-                        -e DOCKER_HOST=$DOCKER_HOST \
-                        aquasec/trivy image ${env.PROJECT_NAME}:${BUILD_NUMBER}
+                        -e DOCKER_HOST=tcp://docker-dind-daemon:2375 \
+                        aquasec/trivy image --docker-host tcp://docker-dind-daemon:2375 ${env.PROJECT_NAME}:${BUILD_NUMBER}
                     """
                 }
             }
