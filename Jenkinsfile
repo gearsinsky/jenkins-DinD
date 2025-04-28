@@ -9,7 +9,7 @@ pipeline {
     // 全域環境變數
     environment {
         PROJECT_NAME = "python-project"
-        DOCKER_HOST = "tcp://docker-dind-daemon:2375"
+        DOCKER_HOST = "DOCKER_HOST=tcp://172.18.0.3:2375"
 
         // DEPLOY_DIR = "/opt/${env.ENV}/deployments"
     }
