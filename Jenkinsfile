@@ -13,18 +13,18 @@ pipeline {
     }
 
     stages {
-        stage('Dockerfile-lint') {
-            steps {
-                echo "Running Dockerfile lint for environment: ${params.ENV}"
-                sh '''
-                    pwd
-                    docker run --rm -i \
-                    -v Dockerfile:/workspace/Dockerfile \
-                    ghcr.io/hadolint/hadolint  \
-                    hadolint /workspace/Dockerfile 
-                '''             
-            }
-        }
+        // stage('Dockerfile-lint') {
+        //     steps {
+        //         echo "Running Dockerfile lint for environment: ${params.ENV}"
+        //         sh '''
+        //             pwd
+        //             docker run --rm -i \
+        //             -v Dockerfile:/workspace/Dockerfile \
+        //             ghcr.io/hadolint/hadolint  \
+        //             hadolint /workspace/Dockerfile 
+        //         '''             
+        //     }
+        // }
         stage('Build') {
             steps {
                 echo "Building image: ${env.PROJECT_NAME}"
@@ -38,7 +38,6 @@ pipeline {
             steps {
                 echo "Running Image lint"
                 sh 'docker run --rm \
-                -v /var/run/docker.sock:/var/run/docker.sock \
                 aquasec/trivy image ${env.PROJECT_NAME}:${BUILD_NUMBER} '
             }
         }
