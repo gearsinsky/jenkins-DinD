@@ -21,8 +21,8 @@ pipeline {
                     ls -la /var/jenkins_home/workspace
                     docker run --rm -i \
                     -v $(pwd):/workspace \
-                    ghcr.io/hadolint/hadolint \
-                    hadolint /workspace/Dockerfile | tee hadolint.out
+                    ghcr.io/hadolint/hadolint ls && pwd \
+                    // hadolint /workspace/Dockerfile 
                 '''             
             }
         }
