@@ -17,10 +17,10 @@ pipeline {
             steps {
                 echo "Running Dockerfile lint for environment: ${params.ENV}"
                 sh '''
+                    cd /var/jenkins_home
                     chmod 755 Dockerfile main.go
                     ls -la
                     whoami
-                    docker info
                     docker run --rm -i \
                     -v $(pwd):/workspace \
                     ghcr.io/hadolint/hadolint \
