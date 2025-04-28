@@ -19,9 +19,9 @@ pipeline {
                 sh '''
                     pwd
                     docker run --rm -i \
-                    -v $(pwd):/workspace \
+                    -v ./Dockerfile:/workspace/Dockerfile \
                     ghcr.io/hadolint/hadolint  \
-                    hadolint /workspace/workspace/jenkinslab02/Dockerfile 
+                    hadolint /workspace/Dockerfile 
                 '''             
             }
         }
