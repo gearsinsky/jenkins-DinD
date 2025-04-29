@@ -56,7 +56,7 @@ pipeline {
             sh '''
                 curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
                 -d chat_id="$CHAT_ID" \
-                -d text="$S_MESSAGE"
+                -d text="$S_MESSAGE
             '''
         }
         failure {
