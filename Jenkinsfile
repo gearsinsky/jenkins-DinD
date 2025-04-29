@@ -9,6 +9,8 @@ pipeline {
     // 全域環境變數
     environment {
         PROJECT_NAME = "python-project"
+        S_MESSAGE = "✅ 成功：$JOB_NAME #$BUILD_NUMBER"
+        F_MESSAGE = "❌ 失敗：$JOB_NAME #$BUILD_NUMBER"
         // DEPLOY_DIR = "/opt/${env.ENV}/deployments"
     }
 
@@ -51,9 +53,19 @@ pipeline {
     post {
         success {
             echo "Pipeline completed successfully for ${params.ENV}"
+            sh '''
+                curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
+                -d chat_id="$CHAT_ID" \
+                -d text="$S_MESSAGE"
+            '''
         }
         failure {
             echo "Pipeline failed for ${params.ENV}"
+            sh '''
+                curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
+                -d chat_id="$CHAT_ID" \
+                -d text="$F_MESSAGE"
+            '''
         }
     }
 }
