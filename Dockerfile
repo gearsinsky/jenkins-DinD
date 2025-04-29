@@ -15,7 +15,6 @@ COPY app.py .
 
 # 開 port
 
-
 EXPOSE 9090
 
 # 啟動指令
