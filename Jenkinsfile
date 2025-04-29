@@ -41,6 +41,7 @@ pipeline {
                     echo "Running Image lint"
                     sh """
                         docker run --rm \
+                        --network jenkins-net \
                         -e DOCKER_HOST=tcp://docker-dind-daemon:2375 \
                         aquasec/trivy image --docker-host tcp://docker-dind-daemon:2375 ${env.PROJECT_NAME}:${BUILD_NUMBER}
                     """
