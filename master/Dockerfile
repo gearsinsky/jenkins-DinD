@@ -11,7 +11,7 @@ RUN usermod -aG docker jenkins
 RUN apt-get update && apt-get install -y docker-cli
 
 # 如果有其他需要安裝的套件，像是工具或者插件，可以在這裡添加
-RUN apt-get install -y nettool
+RUN apt-get install -y net-tool
 
 # 設定 Jenkins 使用的工作目錄
 USER jenkins
