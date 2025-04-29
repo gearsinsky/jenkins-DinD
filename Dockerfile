@@ -14,7 +14,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
 
 # 開 port
-EXPOSE 1000000
+
+
+EXPOSE 9090
 
 # 啟動指令
 CMD ["python", "app.py"]
+
+
