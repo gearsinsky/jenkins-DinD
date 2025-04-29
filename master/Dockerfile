@@ -8,7 +8,7 @@ USER root
 RUN apt-get update && apt-get install -y docker.io
 RUN usermod -aG docker jenkins
 # 也可以選擇只安裝 docker cli
-# RUN apt-get update && apt-get install -y docker-cli
+RUN apt-get update && apt-get install -y docker-cli
 
 # 如果有其他需要安裝的套件，像是工具或者插件，可以在這裡添加
 # RUN apt-get install -y some_package
