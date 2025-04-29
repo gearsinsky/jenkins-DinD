@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 複製應用程式
 COPY app.py .
 
-# 開 port
+
 
 EXPOSE 9090
 
