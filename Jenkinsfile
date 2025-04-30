@@ -86,7 +86,7 @@ pipeline {
                 -d chat_id="$CHAT_ID" \
                 -d text="$F_MESSAGE"
             '''
+            }
         }
-    }
     }
 }
