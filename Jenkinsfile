@@ -67,26 +67,26 @@ pipeline {
                     docker push ${DOCKER_REPO}:${BUILD_NUMBER}
                     docker push ${DOCKER_REPO}:latest
                     """
+                    }
                 }
             }
-    }
-        post {
-            success {
-                echo "Pipeline completed successfully for ${params.ENV}"
-                sh '''
-                    curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
-                    -d chat_id="$CHAT_ID" \
-                    -d text="$S_MESSAGE
-                '''
-            }
-            failure {
-                echo "Pipeline failed for ${params.ENV}"
-                sh '''
-                    curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
-                    -d chat_id="$CHAT_ID" \
-                    -d text="$F_MESSAGE"
-                '''
-            }
+    post {
+        success {
+            echo "Pipeline completed successfully for ${params.ENV}"
+            sh '''
+                curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
+                -d chat_id="$CHAT_ID" \
+                -d text="$S_MESSAGE
+            '''
         }
+        failure {
+            echo "Pipeline failed for ${params.ENV}"
+            sh '''
+                curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
+                -d chat_id="$CHAT_ID" \
+                -d text="$F_MESSAGE"
+            '''
+        }
+    }
     }
 }
