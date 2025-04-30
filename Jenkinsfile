@@ -87,6 +87,6 @@ pipeline {
                 -d text="$F_MESSAGE"
             '''
         }
-    }
+}
     }
 }
