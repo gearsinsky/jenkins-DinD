@@ -39,7 +39,7 @@ pipeline {
                 echo "Current Git Branch: ${env.BRANCH_NAME}"
             }
         }
-        // stage('docker push') {
+        stage('docker push') {
         //     when {
         //         anyOf {
         //             branch 'pushrepo'
