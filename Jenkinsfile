@@ -34,15 +34,19 @@ pipeline {
                 """
             }
         }
-
-        stage('docker push') {
-            when {
-                anyOf {
-                    branch 'pushrepo'
-                    branch 'stg'
-                    branch 'rel'
-                }
+        stage('Debug Branch') {
+            steps {
+                echo "Current Git Branch: ${env.BRANCH_NAME}"
             }
+        }
+        // stage('docker push') {
+        //     when {
+        //         anyOf {
+        //             branch 'pushrepo'
+        //             branch 'stg'
+        //             branch 'rel'
+        //         }
+        //     }
             steps {
                 echo "Reading push image to docker repo"
                 withCredentials([usernamePassword(credentialsId: 'docker-repo', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASWD')]) {
