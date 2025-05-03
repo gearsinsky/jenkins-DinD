@@ -42,13 +42,13 @@ pipeline {
             }
         }
         stage('docker push') {
-        //     when {
-        //         anyOf {
-        //             branch 'pushrepo'
-        //             branch 'stg'
-        //             branch 'rel'
-        //         }
-        //     }
+            when {
+                anyOf {
+                    // branch 'main'
+                    branch 'login-error'
+                    branch 'hotfix'
+                }
+            }
             steps {
                 echo "Reading push image to docker repo"
                 withCredentials([usernamePassword(credentialsId: 'docker-repo', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASWD')]) {
