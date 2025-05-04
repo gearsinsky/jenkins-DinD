@@ -1,3 +1,15 @@
+def sendTelegramMsg(String msg) {
+    withCredentials([
+        string(credentialsId: 'TOKEN', variable: 'TOKEN'),
+        string(credentialsId: 'CHAT_ID', variable: 'CHAT_ID')
+    ]) {
+        sh """
+            curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage \\
+            -d chat_id=${CHAT_ID} \\
+            -d text="${msg}"
+        """
+    }
+}
 pipeline {
     agent any
 
@@ -50,6 +62,7 @@ pipeline {
             }
             steps {
                 echo "Reading push image to docker repo"
+                echo "Deploying tag ${env.GIT_TAG_NAME}"
                 withCredentials([usernamePassword(credentialsId: 'docker-repo', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASWD')]) {
                     sh """
                         echo "$DOCKER_PASWD" | docker login -u "$DOCKER_USER" --password-stdin
@@ -60,19 +73,6 @@ pipeline {
                     """
                 }
             }
-        }
-    }
-
-    def sendTelegramMsg(String msg) {
-        withCredentials([
-            string(credentialsId: 'TOKEN', variable: 'TOKEN'),
-            string(credentialsId: 'CHAT_ID', variable: 'CHAT_ID')
-        ]) {
-            sh """
-                curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage \\
-                -d chat_id=${CHAT_ID} \\
-                -d text="${msg}"
-            """
         }
     }
     post {
