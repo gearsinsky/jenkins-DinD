@@ -45,7 +45,6 @@ pipeline {
             when {
                 anyOf {
                     // branch 'main'
-                    branch 'login-error'
                     branch 'hotfix'
                 }
             }
