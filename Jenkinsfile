@@ -44,9 +44,8 @@ pipeline {
         stage('docker push') {
             when {
                 anyOf {
-                    branch 'release'
+                    // branch 'release'
                     branch 'login-error'
-                    branch 'hotfix'
                 }
             }
             steps {
