@@ -32,7 +32,6 @@ pipeline {
                     docker run --rm \
                     --add-host=docker-dind-daemon:172.18.0.3 \
                     aquasec/trivy image --docker-host tcp://docker-dind-daemon:2375 ${env.PROJECT_NAME}:${BUILD_NUMBER}
-                    env
                 """
             }
         }
@@ -63,22 +62,30 @@ pipeline {
         }
     }
 
+    def sendTelegramMsg(String msg) {
+        withCredentials([
+            string(credentialsId: 'TOKEN', variable: 'TOKEN'),
+            string(credentialsId: 'CHAT_ID', variable: 'CHAT_ID')
+        ]) {
+            sh """
+                curl -s -X POST https://api.telegram.org/bot${TOKEN}/sendMessage \\
+                -d chat_id=${CHAT_ID} \\
+                -d text="${msg}"
+            """
+        }
+    }
     post {
         success {
             echo "Pipeline completed successfully for ${params.ENV}"
-            sh '''
-                curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
-                -d chat_id="$CHAT_ID" \
-                -d text="$S_MESSAGE"
-            '''
+            script {
+                sendTelegramMsg(S_MESSAGE)
+            }
         }
         failure {
             echo "Pipeline failed for ${params.ENV}"
-            sh '''
-                curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage \
-                -d chat_id="$CHAT_ID" \
-                -d text="$F_MESSAGE"
-            '''
+            script {
+                sendTelegramMsg(F_MESSAGE)
+            }
         }
     }
 }
