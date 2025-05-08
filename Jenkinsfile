@@ -26,6 +26,21 @@ pipeline {
     }
 
     stages {
+        stage('Debug Docker') {
+              steps {
+                sh '''
+                  echo "--- whoami ---"
+                  whoami
+                  echo "--- id ---"
+                  id
+                  echo "--- groups ---"
+                  groups
+                  echo "--- docker ps ---"
+                  docker ps
+                '''
+              }
+            }
+
         stage('Build') {
             steps {
                 echo "Building image: ${env.PROJECT_NAME}"
