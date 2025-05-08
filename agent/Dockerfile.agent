@@ -1,0 +1,12 @@
+FROM jenkins/ssh-agent:jdk17
+
+USER root
+
+RUN chmod 666 /etc/environment
+# 加上你自己的工具
+RUN apt-get update && apt-get install -y docker.io curl && \
+    usermod -aG docker jenkins
+COPY ./agent.key.pub /home/jenkins/.ssh/authorized_keys
+RUN chmod 600 /home/jenkins/.ssh/authorized_keys && \
+    ssh-keyscan github.com >> /home/jenkins/.ssh/known_hosts && \
+    chown jenkins:jenkins /home/jenkins/.ssh/authorized_keys

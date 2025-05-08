@@ -1,0 +1,41 @@
+FROM ubuntu:22.04
+
+USER root
+# 安裝必要套件
+RUN apt-get update && apt-get install -y \
+    openssh-server \
+    git \
+    curl \
+    openjdk-17-jdk \
+    sudo && \
+    mkdir -p /var/run/sshd \
+    apt-get update && apt-get install -y docker.io
+
+RUN mkdir -p /etc/ssh && chmod 755 /etc/ssh && \
+    ssh-keygen -A
+
+# 建立 jenkins 使用者
+RUN useradd -m -s /bin/bash core-agent && \
+    echo "core-agent:core-agent" | chpasswd && \
+    usermod -aG sudo core-agent && \
+    usermod -aG docker core-agent
+
+RUN mkdir -p /home/core-agent/jenkins-agent && \
+    chown -R core-agent:core-agent /home/core-agent/jenkins-agent && \
+    chmod 700 /home/core-agent/jenkins-agent
+
+
+COPY ./agent.key.pub /home/core-agent/.ssh/authorized_keys  
+
+# 設定 SSH 公鑰驗證（後面補充）
+
+RUN mkdir -p /home/core-agent/.ssh && \
+    chmod 700 /home/core-agent/.ssh && \
+    ssh-keyscan github.com >> /home/core-agent/.ssh/known_hosts && \
+    chmod 600 /home/core-agent/.ssh/authorized_keys && \
+    chown -R core-agent:core-agent /home/core-agent/.ssh
+
+
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
