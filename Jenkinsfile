@@ -11,7 +11,7 @@ def sendTelegramMsg(String msg) {
     }
 }
 pipeline {
-    agent { label 'core' }
+    agent any
 
     parameters {
         choice(name: 'ENV', choices: ['dev', 'staging', 'prod'], description: 'Select deployment environment')
