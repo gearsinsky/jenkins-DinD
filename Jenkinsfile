@@ -29,6 +29,7 @@ pipeline {
         stage('Debug Docker') {
               steps {
                 sh '''
+                  echo $DOCKER_HOST
                   echo "--- whoami ---"
                   whoami
                   echo "--- id ---"
