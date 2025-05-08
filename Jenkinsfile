@@ -35,9 +35,7 @@ pipeline {
                   id
                   echo "--- groups ---"
                   groups
-                  echo "--- docker ps ---"
-                  docker ps
-                  
+                 
                   echo "--- ps aux | grep $$ ---"
                   ps aux | grep $$
           
@@ -46,6 +44,9 @@ pipeline {
           
                   echo "--- getent group docker ---"
                   getent group docker
+
+                  echo "--- docker ps ---"
+                  docker ps
                 '''
               }
             }
