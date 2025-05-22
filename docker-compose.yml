@@ -1,1 +1,77 @@
-docker-compose.yml
+version: '3.8'
+services:
+  jenkins_master:
+    build:
+      context: ./pipline
+      dockerfile: ./pipline/master/Dockerfile
+    image: jenkins_docker:v1.0.1
+    container_name: jenkins-master
+    restart: always
+    # privileged: true  # 這行讓 jenkins container 裡能跑 docker
+    # user: root         # 這樣可以直接跑 docker 指令，不用 sudo
+    ports:
+      - "8080:8080"     # Jenkins Web UI
+      - "50000:50000"   # Jenkins agent 通訊 port
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - shared-workspace:/var/jenkins_home/workspace
+      # - /var/run/docker.sock:/var/run/docker.sock  # 掛 host 的 docker socket
+      # - /usr/bin/docker:/usr/bin/docker            # 掛 host 的 docker binary
+    environment:
+      JAVA_OPTS: "-Xmx1024m -Xms512m"
+      DOCKER_HOST: "tcp://docker-dind-daemon:2375"
+    networks:
+      - jenkins-net
+
+  docker-dind-daemon:
+    image: docker:dind
+    container_name: jenkins-docker-dind-daemon
+    restart: always
+    privileged: true     # dind 本身也要 privileged，不然 daemon 起不來
+    environment:
+      DOCKER_TLS_CERTDIR: ""   # 關掉 TLS（內網用，不然 client 連不到 daemon）
+    volumes:
+      - dind_storage:/var/lib/docker
+      - shared-workspace:/workspace
+    command: >
+      sh -c "
+        dockerd-entrypoint.sh &
+        sleep 5 &&
+        docker network create --driver bridge jenkins-net || true &&
+        wait
+      "
+    networks:
+      - jenkins-net
+  jenkins-core-agent:
+    image: jenkins-core-agent:3
+    container_name: jenkins-core-agent
+    restart: unless-stopped
+    ports:
+      - "2222:22" # 代理端口
+    #volumes:
+    #  - /var/run/docker.sock:/var/run/docker.sock # 讓 Jenkins 透過 Docker 執行容器
+    environment:
+      DOCKER_HOST: "tcp://docker-dind-daemon:2375"
+    networks:
+      - jenkins-net
+
+  jenkins-agent:
+    image: jenkins-agent:1
+    container_name: jenkins-agent
+    restart: unless-stopped
+    ports:
+      - "2224:22" # 代理端口
+    # volumes:    #   - /var/run/docker.sock:/var/run/docker.sock # 讓 Jenkins 透過 Docker 執行容器
+    environment:
+      DOCKER_HOST: "tcp://docker-dind-daemon:2375"
+    networks:
+      - jenkins-net
+
+volumes:
+  jenkins_home:
+  dind_storage:
+  shared-workspace:
+
+networks:
+  jenkins-net:
+    driver: bridge
