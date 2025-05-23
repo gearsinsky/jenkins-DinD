@@ -1,3 +1,3 @@
-@Library('jenkins-shared-lib_play') _
+@Library('jenkins-shared-lib') _
 
 pipeline()
