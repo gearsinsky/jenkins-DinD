@@ -43,11 +43,11 @@ pipeline {
         }
 
         stage('docker push') {
-            when {
-                anyOf {
-                    branch 'hotfix'
-                }
-            }
+            // when {
+            //     anyOf {
+            //         branch 'hotfix'
+            //     }
+            // }
             steps {
                 dockerpush()
             }
